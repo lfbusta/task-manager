@@ -1,34 +1,34 @@
-import { useState } from "react";
-import reactLogo from "../assets/react.svg";
-import viteLogo from "/vite.svg";
+import { ActionType } from "../types";
+import Column from "../components/Column";
+import { useContext } from "react";
+import { CardsContext, CardsDispatchContext } from "../contexts/cardsContext";
 
-function Home() {
-  const [count, setCount] = useState(0);
+export default function Home() {
+  const state = useContext(CardsContext);
+  const dispatch = useContext(CardsDispatchContext);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="bg-red-100 p-2">
+      <h1>Task Manager</h1>
+      <div className="flex gap-2">
+        {state?.columns.map((column) => (
+          <Column key={column.id} className="column" column={column} />
+        ))}
+        <div className="flex flex-col gap-2 bg-slate-100/50 rounded-sm p-2 border-1 border-slate-200 shadow-sm w-64">
+          <button
+            className="cursor-pointer"
+            onClick={() =>
+              dispatch &&
+              dispatch({
+                type: ActionType.ADD_COLUMN,
+                title: " New Column",
+              })
+            }
+          >
+            + Add Column
+          </button>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
 }
-
-export default Home;
