@@ -17,10 +17,11 @@ export default function NewColumnButton() {
 
   return (
     <button
-      className="cursor-pointer bg-slate-100/50 rounded-md text-left border-slate-200 w-64 shadow-sm text-sm font-semibold p-2 flex items-center hover:bg-slate-100"
+      className="flex items-center justify-between cursor-pointer bg-slate-100/50 rounded-md text-left w-64 shadow-sm text-sm font-semibold p-2 hover:bg-slate-100 text-white hover:text-slate-800 transition-all duration-100"
       onClick={handleClickAddColumnButton}
     >
-      <FaPlus className="mr-2" /> Add Column
+      Add Column
+      <FaPlus className="flex align-middle justify-center mr-2" />
     </button>
   );
 }

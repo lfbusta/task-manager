@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
 const baseClasses =
-  "text-sm font-semibold border border-slate-100 rounded-md p-1 focus:bg-white cursor-pointer focus:cursor-text";
+  "text-sm font-semibold border border-slate-100 rounded-md p-1 focus:bg-white cursor-pointer focus:cursor-text text-slate-800";
 
 interface ColumnTitleProps extends React.HTMLAttributes<HTMLInputElement> {
   value: string;
