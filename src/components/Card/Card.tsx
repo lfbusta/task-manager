@@ -1,6 +1,6 @@
 import type { Card } from "../../types";
 import { twMerge } from "tailwind-merge";
-import { FaAlignRight } from "react-icons/fa6";
+import { FaAlignRight, FaComments } from "react-icons/fa6";
 
 interface CardProps extends React.HTMLAttributes<HTMLButtonElement> {
   card: Card;
@@ -19,9 +19,14 @@ export default function Card({ className, card, onClick }: CardProps) {
       <h3 className="text-xs text-slate-600 font-semibold placeholder:text-slate-400">
         {card.title}
       </h3>
-      {card.description && (
-        <FaAlignRight className="text-slate-300 text-xs" title="" />
-      )}
+      <div className="flex gap-2">
+        {card.comments.length > 0 && (
+          <FaComments className="text-slate-300 text-xs" />
+        )}
+        {card.description && (
+          <FaAlignRight className="text-slate-300 text-xs" />
+        )}
+      </div>
     </button>
   );
 }

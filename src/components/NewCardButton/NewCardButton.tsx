@@ -22,7 +22,6 @@ export default function NewCardButton({
       dispatch({
         type: ActionType.ADD_CARD,
         title: "New Card",
-        description: "",
         columnId: columnId,
       });
     }
