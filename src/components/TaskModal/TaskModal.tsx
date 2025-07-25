@@ -1,7 +1,14 @@
 import TaskModalTitle from "./TaskModalTitle";
 import TaskModalDescription from "./TaskModalDescription";
-import { FaAlignLeft, FaXmark, FaRegTrashCan } from "react-icons/fa6";
-import { useContext, useEffect, useState } from "react";
+import TaskModalComment from "./TaskModalComment";
+import NewCommentButton from "./NewCommentButton";
+import {
+  FaAlignLeft,
+  FaXmark,
+  FaRegTrashCan,
+  FaRegComments,
+} from "react-icons/fa6";
+import { useContext, useEffect, useState, useRef } from "react";
 import {
   CardsContext,
   CardsDispatchContext,
@@ -25,13 +32,24 @@ export default function TaskModal({
   const card = column?.cards.find((c) => c.id === cardId);
   const [cardTitle, setCardTitle] = useState("");
   const [cardDescription, setCardDescription] = useState("");
+  const [cardComments, setCardComments] = useState(card?.comments || []);
+  const [isNewCommentVisible, setIsNewCommentVisible] = useState(false);
+  const newCommentRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (card) {
       setCardTitle(card.title);
       setCardDescription(card.description);
+      setCardComments(card.comments);
     }
   }, [card]);
+
+  // NOTE: This effect is to focus the new comment textarea when it becomes visible.
+  useEffect(() => {
+    if (newCommentRef.current && isNewCommentVisible) {
+      newCommentRef.current.focus();
+    }
+  }, [isNewCommentVisible]);
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setCardTitle(event.target.value);
@@ -45,6 +63,7 @@ export default function TaskModal({
         cardId,
         title: cardTitle,
         description: cardDescription,
+        comments: cardComments,
       });
     }
   }
@@ -70,6 +89,7 @@ export default function TaskModal({
         cardId,
         title: cardTitle,
         description: cardDescription,
+        comments: cardComments,
       });
     }
   }
@@ -92,6 +112,14 @@ export default function TaskModal({
       });
       onClose();
     }
+  }
+
+  function handleClickNewCommentButton() {
+    setIsNewCommentVisible(true);
+  }
+
+  function handleSaveComment() {
+    setIsNewCommentVisible(false);
   }
 
   return (
@@ -126,7 +154,7 @@ export default function TaskModal({
         </div>
         <div className="flex flex-col p-4">
           <h4 className="flex items-center text-sm font-semibold mb-2">
-            <FaAlignLeft className="" />
+            <FaAlignLeft />
             <span className="ml-2">Description</span>
           </h4>
           <TaskModalDescription
@@ -134,14 +162,41 @@ export default function TaskModal({
             onChange={handleDescriptionChange}
             onBlur={handleDescriptionBlur}
             onKeyDown={handleDescriptionKeyDown}
-            className="ml-5"
+            className="ml-5 mb-4"
           />
+          <h4 className="flex items-center text-sm font-semibold mb-2">
+            <FaRegComments />
+            <span className="ml-2">Comments</span>
+          </h4>
+          <div className="flex flex-col gap-2 pl-4">
+            {!isNewCommentVisible && (
+              <NewCommentButton onClick={handleClickNewCommentButton} />
+            )}
+            {isNewCommentVisible && (
+              <TaskModalComment
+                columnId={columnId}
+                cardId={cardId}
+                text=""
+                onSaveComment={handleSaveComment}
+                ref={newCommentRef}
+              />
+            )}
+            {cardComments.map((comment) => (
+              <TaskModalComment
+                columnId={columnId}
+                cardId={cardId}
+                commentId={comment.id}
+                text={comment.text}
+                key={`comment-${comment.id}`}
+              />
+            ))}
+          </div>
         </div>
         <div className="flex items-center justify-end border-t-2 border-slate-200 p-2">
           <button
             onClick={handleClickDeleteCardButton}
             className="flex items-center justify-center text-slate-500 hover:text-red-500 font-semibold cursor-pointer rounded-lg hover:bg-slate-200 h-8 w-8 mr-1 transition-all duration-100"
-            title="Delete Card"
+            title="Delete Task"
           >
             <FaRegTrashCan />
           </button>

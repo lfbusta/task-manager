@@ -38,7 +38,8 @@ export default function reducer(state: State, action: Action): State {
                   {
                     id: crypto.randomUUID(),
                     title: action.title,
-                    description: action.description,
+                    description: "",
+                    comments: [],
                   },
                 ],
               }
@@ -70,6 +71,7 @@ export default function reducer(state: State, action: Action): State {
                         ...card,
                         title: action.title,
                         description: action.description,
+                        comments: action.comments,
                       }
                     : card
                 ),
@@ -77,7 +79,76 @@ export default function reducer(state: State, action: Action): State {
             : col
         ),
       };
-    default:
+    case ActionType.ADD_COMMENT:
+      return {
+        ...state,
+        columns: state.columns.map((col) =>
+          col.id === action.columnId
+            ? {
+                ...col,
+                cards: col.cards.map((card) =>
+                  card.id === action.cardId
+                    ? {
+                        ...card,
+                        comments: [
+                          {
+                            id: crypto.randomUUID(),
+                            text: action.text,
+                          },
+                          ...card.comments,
+                        ],
+                      }
+                    : card
+                ),
+              }
+            : col
+        ),
+      };
+    case ActionType.REMOVE_COMMENT:
+      return {
+        ...state,
+        columns: state.columns.map((col) =>
+          col.id === action.columnId
+            ? {
+                ...col,
+                cards: col.cards.map((card) =>
+                  card.id === action.cardId
+                    ? {
+                        ...card,
+                        comments: card.comments.filter(
+                          (comment) => comment.id !== action.commentId
+                        ),
+                      }
+                    : card
+                ),
+              }
+            : col
+        ),
+      };
+    case ActionType.EDIT_COMMENT:
+      return {
+        ...state,
+        columns: state.columns.map((col) =>
+          col.id === action.columnId
+            ? {
+                ...col,
+                cards: col.cards.map((card) =>
+                  card.id === action.cardId
+                    ? {
+                        ...card,
+                        comments: card.comments.map((comment) =>
+                          comment.id === action.commentId
+                            ? { ...comment, text: action.text }
+                            : comment
+                        ),
+                      }
+                    : card
+                ),
+              }
+            : col
+        ),
+      };
+      default:
       return state;
   }
 }

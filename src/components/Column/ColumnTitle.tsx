@@ -6,6 +6,7 @@ const baseClasses =
 interface ColumnTitleProps extends React.HTMLAttributes<HTMLInputElement> {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onBlur: () => void;
   className?: string;
 }
@@ -14,6 +15,7 @@ export default function ColumnTitle({
   value,
   onBlur,
   onChange,
+  onKeyDown,
   className,
 }: ColumnTitleProps) {
   return (
@@ -22,6 +24,7 @@ export default function ColumnTitle({
       className={twMerge(baseClasses, className)}
       value={value}
       onBlur={onBlur}
+      onKeyDown={onKeyDown}
       onChange={onChange}
     />
   );

@@ -10,11 +10,13 @@ export const baseState: State = {
           id: crypto.randomUUID(),
           title: "First Task",
           description: "Description for first task",
+          comments: [],
         },
         {
           id: crypto.randomUUID(),
           title: "Second Task",
           description: "Description for second task",
+          comments: [],
         },
       ],
     },

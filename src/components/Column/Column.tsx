@@ -36,7 +36,7 @@ export default function Column({
     setColumnTitle(column.title);
   }, [column.title]);
 
-  function handleBlurTitleForm() {
+  function handleBlurTitleInput() {
     if (dispatch) {
       dispatch({
         type: ActionType.EDIT_COLUMN,
@@ -46,7 +46,15 @@ export default function Column({
     }
   }
 
-  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleKeydownTitleInput(
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) {
+    if (event.key === "Enter") {
+      event.currentTarget.blur();
+    }
+  }
+
+  function handleTitleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     setColumnTitle(event.target.value);
   }
 
@@ -69,8 +77,9 @@ export default function Column({
       <div className="flex align-middle">
         <ColumnTitle
           value={columnTitle}
-          onBlur={handleBlurTitleForm}
-          onChange={handleTitleChange}
+          onBlur={handleBlurTitleInput}
+          onKeyDown={handleKeydownTitleInput}
+          onChange={handleTitleInputChange}
           className="flex-1"
         />
         <button
