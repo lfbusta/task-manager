@@ -2,7 +2,7 @@ import { type State, type Action, ActionType } from "../types";
 
 export default function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case ActionType.ADD_COLUMN:
+    case ActionType.ADD_COLUMN: {
       return {
         ...state,
         columns: [
@@ -14,19 +14,22 @@ export default function reducer(state: State, action: Action): State {
           },
         ],
       };
-    case ActionType.REMOVE_COLUMN:
+    }
+    case ActionType.REMOVE_COLUMN: {
       return {
         ...state,
         columns: state.columns.filter((col) => col.id !== action.columnId),
       };
-    case ActionType.EDIT_COLUMN:
+    }
+    case ActionType.EDIT_COLUMN: {
       return {
         ...state,
         columns: state.columns.map((col) =>
           col.id === action.columnId ? { ...col, title: action.title } : col
         ),
       };
-    case ActionType.ADD_CARD:
+    }
+    case ActionType.ADD_CARD: {
       return {
         ...state,
         columns: state.columns.map((col) =>
@@ -46,7 +49,8 @@ export default function reducer(state: State, action: Action): State {
             : col
         ),
       };
-    case ActionType.REMOVE_CARD:
+    }
+    case ActionType.REMOVE_CARD: {
       return {
         ...state,
         columns: state.columns.map((col) =>
@@ -58,7 +62,8 @@ export default function reducer(state: State, action: Action): State {
             : col
         ),
       };
-    case ActionType.EDIT_CARD:
+    }
+    case ActionType.EDIT_CARD: {
       return {
         ...state,
         columns: state.columns.map((col) =>
@@ -79,7 +84,8 @@ export default function reducer(state: State, action: Action): State {
             : col
         ),
       };
-    case ActionType.ADD_COMMENT:
+    }
+    case ActionType.ADD_COMMENT: {
       return {
         ...state,
         columns: state.columns.map((col) =>
@@ -104,7 +110,8 @@ export default function reducer(state: State, action: Action): State {
             : col
         ),
       };
-    case ActionType.REMOVE_COMMENT:
+    }
+    case ActionType.REMOVE_COMMENT: {
       return {
         ...state,
         columns: state.columns.map((col) =>
@@ -125,7 +132,8 @@ export default function reducer(state: State, action: Action): State {
             : col
         ),
       };
-    case ActionType.EDIT_COMMENT:
+    }
+    case ActionType.EDIT_COMMENT: {
       return {
         ...state,
         columns: state.columns.map((col) =>
@@ -148,7 +156,70 @@ export default function reducer(state: State, action: Action): State {
             : col
         ),
       };
-      default:
+    }
+    case ActionType.REORDER_COLUMNS: {
+      const { columnSourceIndex, columnDestinationIndex } = action;
+      const columnsCopy = [...state.columns];
+      const [columnToMove] = columnsCopy.splice(columnSourceIndex, 1);
+      columnsCopy.splice(
+        columnSourceIndex < columnDestinationIndex ? columnDestinationIndex-1 : columnDestinationIndex,
+        0,
+        columnToMove
+      );
+      return {
+        ...state,
+        columns: columnsCopy,
+      };
+    }
+    case ActionType.REORDER_CARDS: {
+      const { columnSourceIndex, columnDestinationIndex, cardSourceIndex, cardDestinationIndex } = action
+      
+      const sourceColumn = state.columns[columnSourceIndex]
+      const sourceColumnCards = [...sourceColumn.cards]
+      const [cardToMove] = sourceColumnCards.splice(cardSourceIndex, 1)
+
+      if(columnSourceIndex === columnDestinationIndex) {
+        const destinationColumnCards = sourceColumnCards
+        destinationColumnCards.splice(cardSourceIndex < cardDestinationIndex ? cardDestinationIndex-1 : cardDestinationIndex, 0, cardToMove)
+  
+        const destinationColumn = {...sourceColumn, cards: destinationColumnCards}
+        const destinationColumns = state.columns.map((col, index) => {
+          if(index === columnDestinationIndex) {
+            return destinationColumn
+          } else {
+            return col
+          }
+        });
+        
+        return {
+          ...state,
+          columns: destinationColumns
+        }
+      } else {
+        const destinationColumn = state.columns[columnDestinationIndex]
+        const destinationColumnCards = [...destinationColumn.cards]
+        destinationColumnCards.splice(cardDestinationIndex, 0, cardToMove)
+        
+        const newSourceColumn = {...sourceColumn, cards: sourceColumnCards}
+        const newDestinationColumn = {...destinationColumn, cards: destinationColumnCards}
+
+        const outputColumns = state.columns.map((col,index) => {
+          if(index === columnSourceIndex) {
+            return newSourceColumn
+          } else if(index === columnDestinationIndex) {
+            return newDestinationColumn
+          } else {
+            return col
+          }
+        })
+
+        return {
+          ...state,
+          columns: outputColumns
+        }
+      }
+    }
+    default:
       return state;
   }
 }

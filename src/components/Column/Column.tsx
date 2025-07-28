@@ -2,15 +2,18 @@ import Card from "../Card";
 import ColumnTitle from "./ColumnTitle";
 import NewCardButton from "../NewCardButton/NewCardButton";
 import { ActionType } from "../../types";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { CardsDispatchContext } from "../../contexts/cardsContext";
-import { useState } from "react";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { useState, Fragment } from "react";
+import { FaRegTrashCan, FaGripLinesVertical } from "react-icons/fa6";
 import type { Column } from "../../types";
+import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import CardDropTarget from "../CardDropTarget";
 
 interface ColumnProps extends React.HTMLAttributes<HTMLDivElement> {
   column: Column;
+  position: number;
   onClickCard: ({
     columnId,
     cardId,
@@ -27,9 +30,25 @@ export default function Column({
   className,
   column,
   onClickCard,
+  position,
 }: ColumnProps) {
   const dispatch = useContext(CardsDispatchContext);
   const [columnTitle, setColumnTitle] = useState("");
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const ref = useRef(null);
+
+  // Make the column draggable.
+  useEffect(() => {
+    const element = ref.current;
+    if (element) {
+      return draggable({
+        element: element,
+        getInitialData: () => ({ type: "column", position }),
+        onDragStart: () => setIsDragging(true),
+        onDrop: () => setIsDragging(false),
+      });
+    }
+  }, [position]);
 
   // NOTE: Technically unnecessary. I could set the default value from props in useState, but his is more reliable as the application grows.
   useEffect(() => {
@@ -73,8 +92,12 @@ export default function Column({
   }
 
   return (
-    <div className={twMerge(baseClasses, className)}>
-      <div className="flex align-middle">
+    <div
+      className={twMerge(baseClasses, className, isDragging && "opacity-70")}
+      ref={ref}
+    >
+      <div className="flex align-middle items-center">
+        <FaGripLinesVertical className="text-slate-400 cursor-all-scroll" />
         <ColumnTitle
           value={columnTitle}
           onBlur={handleBlurTitleInput}
@@ -91,9 +114,21 @@ export default function Column({
         </button>
       </div>
 
-      <div className="flex flex-col gap-2">
-        {column.cards.map((card) => (
-          <Card key={`card-${card.id}`} card={card} onClick={handleClickCard} />
+      <div className="flex flex-col gap-1">
+        <CardDropTarget columnPosition={position} cardPosition={0} />
+        {column.cards.map((card, index) => (
+          <Fragment key={`card-${card.id}`}>
+            <Card
+              card={card}
+              onClick={handleClickCard}
+              position={index}
+              columnPosition={position}
+            />
+            <CardDropTarget
+              columnPosition={position}
+              cardPosition={index + 1}
+            />
+          </Fragment>
         ))}
         <NewCardButton columnId={column.id} className="mt-1" />
       </div>

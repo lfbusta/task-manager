@@ -1,7 +1,8 @@
 import Column from "../components/Column";
 import NewColumnButton from "../components/NewColumnButton";
 import TaskModal from "../components/TaskModal";
-import { useContext, useState } from "react";
+import ColumnDropTarget from "../components/ColumnDropTarget";
+import { useContext, useState, Fragment } from "react";
 import { CardsContext } from "../contexts/cardsContext";
 
 export default function Home() {
@@ -39,13 +40,17 @@ export default function Home() {
         Task Manager
       </h1>
       <div className="flex gap-2">
-        {state?.columns.map((column) => (
-          <Column
-            key={column.id}
-            className="column"
-            column={column}
-            onClickCard={handleCardClick}
-          />
+        <ColumnDropTarget columnPosition={0} />
+        {state?.columns.map((column, index) => (
+          <Fragment key={column.id}>
+            <Column
+              className="column"
+              column={column}
+              onClickCard={handleCardClick}
+              position={index}
+            />
+            <ColumnDropTarget columnPosition={index + 1} />
+          </Fragment>
         ))}
         <div className="flex flex-col">
           <NewColumnButton />

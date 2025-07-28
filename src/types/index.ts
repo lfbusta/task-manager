@@ -30,6 +30,8 @@ export enum ActionType {
   ADD_COMMENT = "ADD_COMMENT",
   REMOVE_COMMENT = "REMOVE_COMMENT",
   EDIT_COMMENT = "EDIT_COMMENT",
+  REORDER_COLUMNS = "REORDER_COLUMNS",
+  REORDER_CARDS = "REORDER_CARDS",
 }
 
 export type Action =
@@ -48,4 +50,6 @@ export type Action =
     }
   | { type: ActionType.ADD_COMMENT; columnId: string; cardId: string; text: string }
   | { type: ActionType.REMOVE_COMMENT; columnId: string; cardId: string; commentId: string }
-  | { type: ActionType.EDIT_COMMENT; columnId: string; cardId: string; commentId: string; text: string };
+  | { type: ActionType.EDIT_COMMENT; columnId: string; cardId: string; commentId: string; text: string }
+  | { type: ActionType.REORDER_COLUMNS; columnSourceIndex: number; columnDestinationIndex: number }
+  | { type: ActionType.REORDER_CARDS; columnSourceIndex: number; columnDestinationIndex: number; cardSourceIndex: number; cardDestinationIndex: number };
