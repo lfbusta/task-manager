@@ -8,7 +8,8 @@ import {
   type ElementDragPayload,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
-const baseClasses = "w-0 bg-white opacity-25 rounded-md transition-[width]";
+const baseClasses =
+  "w-0 bg-white opacity-25 rounded-md transition-[width] shrink-0";
 
 interface ColumnDropTargetProps extends React.HTMLAttributes<HTMLDivElement> {
   columnPosition: number;

@@ -27,7 +27,7 @@ export default function Home() {
   }
 
   return (
-    <div className="board p-2">
+    <div className="board flex flex-col p-2 pb-0 overflow-y-hidden">
       {selectedCard.columnId && selectedCard.cardId && (
         <TaskModal
           columnId={selectedCard.columnId}
@@ -39,12 +39,11 @@ export default function Home() {
       <h1 className="text-2xl font-bold text-slate-100 mt-1 mb-4">
         Task Manager
       </h1>
-      <div className="flex gap-2">
+      <div className="flex h-full gap-2 overflow-y-hidden">
         <ColumnDropTarget columnPosition={0} />
         {state?.columns.map((column, index) => (
           <Fragment key={column.id}>
             <Column
-              className="column"
               column={column}
               onClickCard={handleCardClick}
               position={index}

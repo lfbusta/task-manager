@@ -11,7 +11,7 @@ interface CardProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
 const baseClasses =
-  "flex items-center bg-white p-2 pl-0 rounded-lg shadow hover:shadow-md border-2 border-white hover:border-blue-500 transition-all transition-duration-100 min-h-8 cursor-pointer";
+  "flex items-center bg-white p-2 pl-0 rounded-lg shadow hover:shadow-md border-2 border-white hover:border-blue-500 transition-all transition-duration-100 min-h-8 max-h-8 cursor-pointer";
 
 export default function Card({
   className,

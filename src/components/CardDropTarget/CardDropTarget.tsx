@@ -8,7 +8,8 @@ import {
   type ElementDragPayload,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
-const baseClasses = "h-0 bg-black opacity-25 rounded-md transition-[height]";
+const baseClasses =
+  "h-0 bg-black opacity-25 rounded-md transition-[height] shrink-0";
 
 interface CardDropTargetProps extends React.HTMLAttributes<HTMLDivElement> {
   columnPosition: number;

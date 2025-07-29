@@ -24,7 +24,7 @@ interface ColumnProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const baseClasses =
-  "flex flex-col gap-2 bg-slate-100 rounded-xl p-2 border-slate-200 shadow-sm w-64 h-fit";
+  "w-64 min-w-64 h-fit max-h-full overflow-y-hidden flex flex-col gap-2 bg-slate-100 rounded-xl p-2 border-slate-200 shadow-sm";
 
 export default function Column({
   className,
@@ -114,7 +114,7 @@ export default function Column({
         </button>
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 overflow-y-auto">
         <CardDropTarget columnPosition={position} cardPosition={0} />
         {column.cards.map((card, index) => (
           <Fragment key={`card-${card.id}`}>
@@ -130,8 +130,8 @@ export default function Column({
             />
           </Fragment>
         ))}
-        <NewCardButton columnId={column.id} className="mt-1" />
       </div>
+      <NewCardButton columnId={column.id} className="mt-1" />
     </div>
   );
 }
