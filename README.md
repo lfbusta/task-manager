@@ -1,69 +1,81 @@
-# React + TypeScript + Vite
+# 🗂️ React Task Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive Kanban board built with React. Users can manage dynamic columns and task cards, track progress visually, and persist data using localStorage.
 
-Currently, two official plugins are available:
+![App screenshot](./public/screenshot.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+- **Dynamic Columns**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+  - Add new columns
+  - Rename existing columns
+  - Delete columns
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Task Cards**
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+  - Add new tasks to any column
+  - Edit task title, description, and comments
+  - Delete tasks
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Comments**
+
+  - Add, edit, and remove comments inside a task's detail view
+
+- **Drag & Drop**
+
+  - Move tasks within a column
+  - Move tasks across columns
+  - Reorder columns
+
+- **Persistence**
+  - All data is stored in `localStorage` and loaded on refresh
+
+## 🧑‍💻 Tech Stack
+
+- **Vite**
+- **TypeScript**
+- **React**
+- **Tailwind CSS** for styling
+- **Jest** for unit testing
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js >= 22.17.1
+
+### Installation
+
+```bash
+npm i
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Visit http://localhost:5173 in your browser.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🧪 Running Tests
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+npm run test
+```
+
+Includes unit tests for the reducer logic/core functionality.
+
+## 📌 Notes
+
+This project was completed as part of a technical interview task.
+Emphasis was placed on design, clean state management, functional UI, and strong user experience with smooth interactions.
+
+Page is fully responsive and animated.
+
+To stay as close as posible to the expected timeframe, some compromises were made:
+
+- Sub-comments were omited as I believe the only complexity (deep state updates through `useReducer`) is already showcased throughout the reducer.
+- Keyboard navigation was omited, but keyboard eventes were used to confirm text inputs to showcase the use of keyboard events.
+
+`react-router-dom` was installed but only one page was implemented. It was left installed so the reviewer knows I'm aware of it and know how to use it.
+
+While not part of the main recquirements, I added unit tests to the reducer as I think testing is a high priority when it comes to development of an ongoing application.
+
+Almost no comments were left in the code. I always try to make the code as readable as posible by naming functions using imperative tense and having self-explanatory variable names.

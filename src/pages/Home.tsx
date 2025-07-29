@@ -27,7 +27,7 @@ export default function Home() {
   }
 
   return (
-    <div className="board flex flex-col p-2 pb-0 overflow-y-hidden">
+    <div className="board flex flex-col p-2 pb-0 overflow-y-hidden w-full">
       {selectedCard.columnId && selectedCard.cardId && (
         <TaskModal
           columnId={selectedCard.columnId}
